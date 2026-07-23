@@ -3,13 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Michael Lamb — michaellamb.dev</title>
-	<meta name="description" content="Software engineer and cinema lover in Jackson, Mississippi. Blog, Letterboxd viewer, newsletter, and projects.">
-	<link rel="canonical" href="https://michaellamb.dev/">
+	<title>About — Michael Lamb</title>
+	<meta name="description" content="About Michael Lamb — software engineer in Jackson, Mississippi. Writing about distributed systems, side projects, and the rest of life.">
+	<link rel="canonical" href="https://michaellamb.dev/about.html">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="Michael Lamb — michaellamb.dev">
-	<meta property="og:description" content="Software engineer and cinema lover in Jackson, Mississippi. Blog, Letterboxd viewer, newsletter, and projects.">
-	<meta property="og:url" content="https://michaellamb.dev/">
+	<meta property="og:title" content="About — Michael Lamb">
+	<meta property="og:description" content="About Michael Lamb — software engineer in Jackson, Mississippi. Writing about distributed systems, side projects, and the rest of life.">
+	<meta property="og:url" content="https://michaellamb.dev/about.html">
 	<meta property="og:image" content="https://michaellamb.dev/assets/og.png">
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
@@ -40,47 +40,69 @@
 	</nav>
 
 	<main id="main">
-		<section class="sk-hero sk-hero--dark">
-			<div class="sk-hero__inner">
-				<p class="sk-eyebrow">michaellamb.dev</p>
-				<h1 class="sk-hero__title">Michael Lamb</h1>
-				<p class="sk-hero__subtitle">Software engineer. Cinema lover. Building things in Jackson, Mississippi.</p>
-				<div class="sk-hero__ctas">
-					<a class="sk-btn sk-btn--on-dark sk-btn--primary" href="https://blog.michaellamb.dev">Read the blog</a>
-					<a class="sk-btn sk-btn--on-dark sk-btn--ghost" href="mailto:michael@michaellamb.dev">Say hello</a>
-				</div>
+		<section class="sk-post-hero sk-post-hero--dark">
+			<div class="sk-post-hero__inner">
+				<p class="sk-eyebrow">About</p>
+				<img class="sk-avatar" src="/assets/bio.jpg" alt="Michael Lamb">
+				<h1 class="sk-post-hero__title">Michael Lamb</h1>
+				<p class="sk-post-hero__subtitle">Software engineer in Jackson, Mississippi. Writing about distributed systems, side projects, and the rest of life.</p>
 			</div>
 		</section>
 
-		<section class="sk-strip">
-			<div class="sk-strip__inner">
-				<div class="sk-strip__header">
-					<h2 class="sk-strip__title">Around the site</h2>
-				</div>
-				<div class="sk-grid sk-grid--apps">
-					<a class="sk-card" href="https://blog.michaellamb.dev">
-						<p class="sk-card__date">blog.michaellamb.dev</p>
-						<h3 class="sk-card__title">Blog</h3>
-						<p class="sk-card__meta">Writing on software, homelab, and life.</p>
-					</a>
-					<a class="sk-card" href="https://letterboxd.michaellamb.dev">
-						<p class="sk-card__date">letterboxd.michaellamb.dev</p>
-						<h3 class="sk-card__title">Letterboxd Viewer</h3>
-						<p class="sk-card__meta">My film diary, stats, and ratings, visualized.</p>
-					</a>
-					<a class="sk-card" href="https://subscribe.michaellamb.dev">
-						<p class="sk-card__date">subscribe.michaellamb.dev</p>
-						<h3 class="sk-card__title">Newsletter</h3>
-						<p class="sk-card__meta">Occasional letters, straight to your inbox.</p>
-					</a>
-					<a class="sk-card" href="https://kotlin-tutorial.michaellamb.dev">
-						<p class="sk-card__date">kotlin-tutorial.michaellamb.dev</p>
-						<h3 class="sk-card__title">Kotlin Tutorial</h3>
-						<p class="sk-card__meta">An interactive introduction to Kotlin.</p>
-					</a>
+		<article class="sk-article">
+			<p>Michael is a software engineer at <a href="https://cspire.com" target="_blank" rel="noopener">C Spire</a>. He organizes meetups with Jackson Film Club, Jackson Devs, and C Spire Gaming around the Jackson area.</p>
+
+			<p><a href="https://blog.michaellamb.dev">The blog</a> started as a documentation log for a Raspberry Pi cluster build. Most content since then has been about that environment, with community and professional posts mixed in &mdash; plus a little personality.</p>
+
+			<p>If something here inspires you, I&rsquo;d love to know about it. Reach out at <a href="mailto:michael@michaellamb.dev">michael@michaellamb.dev</a>, or start with <a href="https://blog.michaellamb.dev/2021/03/hello-world/">Hello, World!</a> &mdash; the first post.</p>
+
+			<h2>Elsewhere</h2>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="https://github.com/michaellambgelo" target="_blank" rel="noopener">GitHub</a></li>
+				<li><a href="https://www.linkedin.com/in/michael-lamb-ms/" target="_blank" rel="noopener">LinkedIn</a></li>
+				<li><a href="https://medium.com/@themichaellamb" target="_blank" rel="noopener">Medium</a></li>
+				<li><a href="https://blog.michaellamb.dev/docs/MichaelLambResume.pdf" target="_blank" rel="noopener">CV (PDF)</a></li>
+				<li><a href="https://subscribe.michaellamb.dev" target="_blank" rel="noopener">Newsletter</a> <img src="https://status.michaellamb.dev/api/badge/13/status" alt="Newsletter status" style="display: inline-block; vertical-align: middle; height: 1.2em;"></li>
+			</ul>
+
+			<h2>Projects</h2>
+			<div id="projects-widget" data-src="https://kotlin-tutorial.michaellamb.dev/widgets/projects">
+				<div class="sk-widget-loading" role="status" aria-live="polite">
+					<div class="sk-widget-loading__mark" aria-hidden="true">
+						<span class="sk-widget-loading__spinner"></span>
+						<svg class="sk-widget-loading__logo" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+							<g font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="34">
+								<text x="32" y="32" text-anchor="middle" fill="#00ffff" transform="translate(-2,0)">ML</text>
+								<text x="32" y="32" text-anchor="middle" fill="#ff0000" transform="translate(2,0)">ML</text>
+								<text x="32" y="32" text-anchor="middle" fill="currentColor">ML</text>
+							</g>
+						</svg>
+					</div>
+					<span class="sk-widget-loading__label">loading projects&hellip;</span>
 				</div>
 			</div>
-		</section>
+
+			<h2>Important links</h2>
+			<ul style="list-style: none; padding-left: 0;">
+				<li><a href="https://blog.michaellamb.dev" target="_blank" rel="noopener">blog.michaellamb.dev</a> &mdash; tech &amp; life blog</li>
+				<li><a href="https://index.michaellamb.dev" target="_blank" rel="noopener">Letterboxd index</a> &mdash; a Rolodex of Letterboxd profiles</li>
+				<li><a href="https://link.michaellamb.dev" target="_blank" rel="noopener">link.michaellamb.dev</a> &mdash; promotional links</li>
+				<li><a href="https://status.michaellamb.dev" target="_blank" rel="noopener">status.michaellamb.dev</a> &mdash; uptime monitoring</li>
+			</ul>
+		</article>
+
+		<script>
+			document.querySelectorAll('[data-src]').forEach(async (el) => {
+				try {
+					const response = await fetch(el.dataset.src);
+					if (!response.ok) throw new Error('HTTP ' + response.status);
+					el.innerHTML = await response.text();
+				} catch (e) {
+					el.innerHTML = '<em>Widget unavailable.</em>';
+					window.GrafanaFaroWebSdk?.faro?.api?.pushError?.(e);
+				}
+			});
+		</script>
 	</main>
 
 	<footer class="sk-footer">
