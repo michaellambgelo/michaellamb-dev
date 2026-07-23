@@ -1,0 +1,290 @@
+/* ------------------------------------------------------------------
+ * theme.css — Apple-inspired design tokens + base typography
+ * Palette and type scale derived from Apple's public marketing system
+ * (SF Pro Display/Text sizes, weights, tracking, and line-heights).
+ *
+ * Copied VERBATIM (below this header) from michaellambgelo.github.io
+ * css/theme.css — the design-system source of truth. Sync by diff;
+ * do not edit tokens here.
+ * ------------------------------------------------------------------ */
+
+/* ---------- Inter (SF Pro substitute) ---------- */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('/font/inter/Inter-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/font/inter/Inter-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/font/inter/Inter-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/font/inter/Inter-Bold.woff2') format('woff2');
+}
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Surfaces */
+  --sk-bg-light: #f5f5f7;
+  --sk-bg-dark: #000000;
+  --sk-page-bg: var(--sk-bg-light);
+  --sk-surface: #ffffff;
+  --sk-surface-muted: #ebebef;
+  --sk-surface-dark-1: #272729;
+  --sk-surface-dark-2: #2a2a2d;
+
+  /* Text */
+  --sk-text-primary: #1d1d1f;
+  --sk-text-body: rgba(0, 0, 0, 0.8);
+  --sk-text-tertiary: rgba(0, 0, 0, 0.48);
+  --sk-text-inverse: #ffffff;
+  --sk-text-inverse-body: rgba(255, 255, 255, 0.88);
+  --sk-text-inverse-tertiary: rgba(255, 255, 255, 0.56);
+
+  /* Interactive */
+  --sk-accent: #0071e3;
+  --sk-link: #0066cc;
+  --sk-link-dark-bg: #2997ff;
+  --sk-focus: #0071e3;
+
+  /* Rules + shadows */
+  --sk-rule: rgba(0, 0, 0, 0.08);
+  --sk-rule-inverse: rgba(255, 255, 255, 0.12);
+  --sk-card-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+
+  /* Radius */
+  --sk-radius-sm: 5px;
+  --sk-radius-md: 8px;
+  --sk-radius-lg: 12px;
+  --sk-radius-pill: 980px;
+
+  /* Layout */
+  --sk-content-max: 980px;
+  --sk-reading-max: 680px;
+  --sk-nav-height: 48px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sk-bg-light: #1d1d1f;
+    --sk-bg-dark: #000000;
+    --sk-page-bg: #000000;
+    --sk-surface: #1d1d1f;
+    --sk-surface-muted: #2a2a2d;
+
+    --sk-text-primary: #ffffff;
+    --sk-text-body: rgba(255, 255, 255, 0.88);
+    --sk-text-tertiary: rgba(255, 255, 255, 0.56);
+
+    --sk-link: #2997ff;
+    --sk-link-dark-bg: #2997ff;
+
+    --sk-rule: rgba(255, 255, 255, 0.12);
+    --sk-card-shadow: rgba(0, 0, 0, 0.6) 3px 5px 30px 0;
+
+    color-scheme: dark;
+  }
+}
+
+/* ---------- Reset + base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--sk-page-bg);
+  color: var(--sk-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.022em;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--sk-link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:focus-visible {
+  outline: 2px solid var(--sk-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Typography scale ---------- */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em;
+  color: var(--sk-text-primary);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.14;
+}
+
+.sk-display {
+  font-size: clamp(40px, 6vw, 56px);
+  line-height: 1.07;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sk-eyebrow {
+  font-size: 14px;
+  line-height: 1.29;
+  letter-spacing: -0.016em;
+  font-weight: 600;
+  color: var(--sk-text-tertiary);
+  margin: 0 0 12px;
+}
+
+.sk-subtitle {
+  font-size: 21px;
+  line-height: 1.24;
+  letter-spacing: 0.011em;
+  font-weight: 400;
+  color: var(--sk-text-body);
+  margin: 0;
+}
+
+.sk-caption {
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.016em;
+  color: var(--sk-text-tertiary);
+}
+
+.sk-micro {
+  font-size: 12px;
+  line-height: 1.33;
+  letter-spacing: -0.01em;
+  color: var(--sk-text-tertiary);
+}
+
+/* Long-form article content */
+article h1 { font-size: 40px; line-height: 1.10; }
+article h2 { font-size: 28px; line-height: 1.14; letter-spacing: 0.007em; margin-top: 1.6em; }
+article h3 { font-size: 21px; line-height: 1.19; letter-spacing: 0.011em; margin-top: 1.4em; }
+article h4 { font-size: 17px; line-height: 1.24; font-weight: 600; margin-top: 1.2em; }
+
+article p,
+article ul,
+article ol,
+article blockquote {
+  margin: 0 0 1em;
+}
+
+article ul,
+article ol {
+  padding-left: 1.4em;
+}
+
+article li + li { margin-top: 0.25em; }
+
+article blockquote {
+  border-left: 3px solid var(--sk-rule);
+  padding: 2px 0 2px 18px;
+  color: var(--sk-text-body);
+}
+
+article hr {
+  border: 0;
+  border-top: 1px solid var(--sk-rule);
+  margin: 2.5em 0;
+}
+
+article strong, article b { font-weight: 600; }
+article em, article i { font-style: italic; }
+
+article a {
+  color: var(--sk-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+article a:hover { text-decoration-thickness: 2px; }
+
+article img {
+  border-radius: var(--sk-radius-lg);
+  margin: 1.5em 0;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 14px;
+}
+article th,
+article td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--sk-rule);
+}
+article th { font-weight: 600; }
+
+article code {
+  font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  background: var(--sk-surface-muted);
+  color: var(--sk-text-primary);
+  padding: 2px 6px;
+  border-radius: var(--sk-radius-sm);
+}
+
+::selection {
+  background: var(--sk-accent);
+  color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
