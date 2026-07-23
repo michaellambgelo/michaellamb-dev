@@ -313,6 +313,21 @@ html.sk-nav-open {
   box-shadow: var(--sk-card-shadow);
 }
 
+/* Landing-only: larger hero portrait */
+.sk-avatar--lg {
+  width: 220px;
+  height: 220px;
+}
+
+/* Landing-only: ML-monogram anaglyph fringing (cyan left / red right,
+   letterform on top) lifted from the blog's chromatic mark — see the
+   widget-loading logo and favicon monogram. */
+.sk-anaglyph {
+  text-shadow:
+    -0.05em 0 0 #00ffff,
+    0.05em 0 0 #ff0000;
+}
+
 /* ---------- Post hero band (about page) ---------- */
 .sk-post-hero {
   min-height: 60vh;
@@ -595,6 +610,7 @@ a.sk-card:hover { text-decoration: none; }
   }
   .sk-post-hero__inner { gap: 20px; }
   .sk-avatar { width: 96px; height: 96px; }
+  .sk-avatar--lg { width: 150px; height: 150px; }
   .sk-article { padding: 48px 18px 32px; }
   .sk-strip { padding: 64px 18px; }
   .sk-strip__header { flex-direction: column; gap: 8px; }
