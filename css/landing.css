@@ -321,11 +321,15 @@ html.sk-nav-open {
 
 /* Landing-only: ML-monogram anaglyph fringing (cyan left / red right,
    letterform on top) lifted from the blog's chromatic mark — see the
-   widget-loading logo and favicon monogram. */
+   widget-loading logo and favicon monogram. Fringe colors are custom
+   properties so a container or modifier can soften them for light
+   backgrounds without touching markup. */
 .sk-anaglyph {
+  --anaglyph-left: #00ffff;
+  --anaglyph-right: #ff0000;
   text-shadow:
-    -0.05em 0 0 #00ffff,
-    0.05em 0 0 #ff0000;
+    -0.05em 0 0 var(--anaglyph-left),
+    0.05em 0 0 var(--anaglyph-right);
 }
 
 /* ---------- Post hero band (about page) ---------- */
