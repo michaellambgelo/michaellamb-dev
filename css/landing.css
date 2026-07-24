@@ -332,7 +332,8 @@ html.sk-nav-open {
     0.05em 0 0 var(--anaglyph-right);
 }
 
-/* Landing-only: particle-reveal enhancement (js/particle-reveal.js).
+/* Landing-only: canvas-effect enhancement wrapper, shared by the hero
+   effect scripts (js/vhs.js active; js/particle-reveal.js kept unwired).
    The source canvas hosts the hero content via layoutsubtree; the
    content div replicates .sk-hero's interior layout because the hero's
    own flex/padding don't reach inside the absolute canvas. */
