@@ -332,6 +332,37 @@ html.sk-nav-open {
     0.05em 0 0 var(--anaglyph-right);
 }
 
+/* Landing-only: particle-reveal enhancement (js/particle-reveal.js).
+   The source canvas hosts the hero content via layoutsubtree; the
+   content div replicates .sk-hero's interior layout because the hero's
+   own flex/padding don't reach inside the absolute canvas. */
+.sk-fx-source {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sk-fx-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 22px;
+  text-align: center;
+}
+.sk-fx-output {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .sk-fx-content { padding: 72px 18px; }
+}
+
 /* ---------- Post hero band (about page) ---------- */
 .sk-post-hero {
   min-height: 60vh;
