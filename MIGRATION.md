@@ -1,68 +1,59 @@
-# michaellamb.dev DNS migration — carrd.co → Cloudflare Pages
+# michaellamb.dev DNS migration — carrd.co → Cloudflare Workers
 
-Runbook for pointing the apex at this repo's landing page. Written 2026-07-24.
+Runbook for pointing the apex at this repo's landing page. Written 2026-07-24,
+amended same day: the project deployed as a **Worker with static assets**
+(Workers Builds Git integration), not Cloudflare Pages.
 Delete this file once the migration is complete and stable.
 
 ## Verified current state (2026-07-24)
 
 - `michaellamb.dev` — Cloudflare zone, **proxied** (orange-cloud) records fronting
-  the carrd.co page (serving carrd content, last-modified 2026-04-18).
+  the carrd.co page. Carrd still serves the apex.
 - `www.michaellamb.dev` — proxied, **301 → apex**. Preserve this.
-- `michaellamb-dev.pages.dev` — does not resolve: **Pages project not created yet**.
-- Repo `michaellambgelo/michaellamb-dev` on GitHub, `main` current.
+- **Worker `michaellamb-dev` is live** at
+  `https://michaellamb-dev.michaellamb.workers.dev` — Workers Builds watches
+  `main` and runs `wrangler deploy` on push; `wrangler.jsonc` serves static
+  assets from the repo root; observability enabled.
+- Deployment verified current (latest commit's files serve; site is
+  single-page — About/Now link to the blog).
 - Faro proxy fully provisioned for this page (`landing` app key, apex origin
   allowlisted, `LANDING_INGEST_TOKEN` secret confirmed set).
-- kotlin-tutorial widgets CORS already allows `https://michaellamb.dev`.
 - wrangler OAuth is logged in as michael@michaellamb.dev on the right account.
 
-## Phase 0 — safety net (dashboard, 2 min)
+## Phase 0 — safety net (dashboard, 2 min) — DO THIS FIRST
 
-Before touching anything, record the current DNS so rollback is trivial:
+Record the current DNS so rollback is trivial:
 
 1. Cloudflare dashboard → michaellamb.dev zone → DNS → Records.
 2. **Export zone file** (button at the bottom of the records list) and/or
    screenshot the apex + www records. The carrd origin values are only visible
    here — they cannot be recovered from outside once replaced.
-3. Note whether carrd uses A records or a CNAME for the apex.
 
-## Phase 1 — create the Pages project (dashboard, 3 min)
+## Phase 1 — project creation — ✅ DONE
 
-Git integration must be chosen at project creation (a direct-upload project
-cannot be converted later), so this is a dashboard step:
-
-1. Workers & Pages → Create → **Pages** → Connect to Git → repo
-   `michaellambgelo/michaellamb-dev`. Grant the Cloudflare GitHub App access to
-   the repo if it isn't listed.
-2. Project name **`michaellamb-dev`**, production branch **`main`**,
-   framework preset **None**, build command **(empty)**, build output
-   directory **`/`**.
-3. Save and Deploy. No build runs; deploy is seconds.
-
-**Verify before continuing** (CLI, safe any time):
+The Worker exists and serves the site. Pre-cutover spot checks any time:
 
 ```sh
-curl -sI https://michaellamb-dev.pages.dev/           # 200, cloudflare headers
-curl -s  https://michaellamb-dev.pages.dev/about.html | grep -c sk-post-hero  # ≥1
+curl -sI https://michaellamb-dev.michaellamb.workers.dev/   # 200
 ```
 
-Then eyeball `https://michaellamb-dev.pages.dev` in a browser: both color
-schemes, mobile hamburger, cards. Expected and fine on pages.dev:
-- Faro POSTs are CORS-rejected (only the apex origin is allowlisted).
-- The About "Projects" widget shows "Widget unavailable." (same CORS reason).
-Both resolve themselves at cutover; do not widen any allowlists for pages.dev.
+Expected and fine on the workers.dev origin (allowlists are apex-only; do not
+widen them): Faro POSTs are CORS-rejected. This resolves itself at cutover.
 
 ## Phase 2 — cutover (dashboard, 2 min, zero-downtime)
 
 Carrd keeps serving until the DNS record actually changes; each step is
 independently reversible.
 
-1. Pages project → **Custom domains** → Add → `michaellamb.dev`. The zone is in
-   this account, so Cloudflare offers to replace the conflicting apex record
-   with a CNAME to the Pages project. **Accepting that dialog is the cutover.**
-2. Add `www.michaellamb.dev` as a second custom domain the same way. Pages
-   serves the same site on www; if the old www record was a carrd-side
-   redirect, this keeps www resolving. (Optional hardening: a Redirect Rule
-   `www → apex` 301 in the zone to preserve the exact old behavior.)
+1. Worker `michaellamb-dev` → **Settings → Domains & Routes → + Add →
+   Custom Domain** → `michaellamb.dev`. The dashboard warns about the existing
+   (carrd) record on that hostname and offers to replace it — **accepting is
+   the cutover.** Cloudflare creates the Worker DNS record and certificate.
+2. Add `www.michaellamb.dev` as a second custom domain the same way, or —
+   to preserve the exact current behavior — instead create a zone
+   **Redirect Rule**: `www.michaellamb.dev/*` → 301 `https://michaellamb.dev/$1`
+   (requires a proxied DNS record for www to remain; simplest is the second
+   custom domain, which serves the same site on www).
 3. Propagation is near-instant — the change is inside Cloudflare's own zone.
 
 ## Phase 3 — post-cutover verification (CLI + browser, 5 min)
@@ -71,11 +62,11 @@ independently reversible.
 curl -sI https://michaellamb.dev/        | head -5    # 200, no carrd headers
 curl -sI https://www.michaellamb.dev/    | head -5    # 200 or 301 → apex
 curl -s  https://michaellamb.dev/ | grep -c sk-hero   # ≥1 → new page live
+curl -s -o /dev/null -w '%{http_code}\n' https://michaellamb.dev/MIGRATION.md  # 404 (.assetsignore working)
 ```
 
 Browser checks on https://michaellamb.dev:
 - Network tab: POST `grafana.michaellamb.dev/faro-proxy?app=landing` → 2xx.
-- About page: Projects widget populates from kotlin-tutorial.
 - Both color schemes; mobile nav.
 - Share-card check (og.png) in a social-card validator if you care about it.
 
@@ -84,17 +75,16 @@ before (same app identity the carrd page used — continuity, not a new series).
 
 ## Phase 4 — rollback (only if needed)
 
-In the zone's DNS records, delete the Pages CNAME(s) and re-create the apex/www
-records from the Phase 0 export. Carrd is back within seconds. Removing the
-custom domain from the Pages project (Custom domains → … → Remove) does the
-same from the other side.
+Worker → Settings → Domains & Routes → remove the custom domain(s), then
+re-create the apex/www records from the Phase 0 export in the zone's DNS page.
+Carrd is back within seconds.
 
 ## Phase 5 — cleanup (after a few stable days)
 
-- carrd.co dashboard: remove the custom domain; downgrade/cancel the Pro plan
-  if the landing page was its only use.
-- Remove the temporary "site not live yet" caveats: none in-repo (README and
-  CLAUDE.md are already written present-tense).
+- carrd.co dashboard: remove the custom domain; downgrade/cancel the plan if
+  the landing page was its only use.
+- Optional: disable the `workers.dev` route on the Worker (Settings → Domains
+  & Routes) so the apex is the single canonical origin.
 - Add `michaellamb-dev` to the `~/Workspace/CLAUDE.md` and `~/CLAUDE.md`
   project tables.
 - Optional: add an uptime-kuma monitor for https://michaellamb.dev on node3.
@@ -102,6 +92,6 @@ same from the other side.
 
 ## Deploys after migration
 
-`git push origin main` (or `/deploy` from the repo) — the Pages Git
-integration builds nothing and publishes the pushed tree. `scripts/deploy.sh`
-already emits `url=https://michaellamb.dev`.
+`git push origin main` (or `/deploy` from the repo) — Workers Builds runs
+`wrangler deploy` on push and publishes the tree per `wrangler.jsonc`.
+`scripts/deploy.sh` already emits `url=https://michaellamb.dev`.

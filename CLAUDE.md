@@ -8,7 +8,7 @@ The apex `michaellamb.dev` landing page — a static hub linking the blog (`blog
 
 ## Stack
 
-Plain HTML/CSS/JS. **No build step, no npm, no framework.** Cloudflare Pages serves the repo root as-is via the GitHub git integration (push to `main` deploys; build command empty, output dir `/`).
+Plain HTML/CSS/JS. **No build step, no npm, no framework.** Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc`, assets from the repo root) via the Workers Builds git integration — push to `main` and Cloudflare runs `wrangler deploy`. `.assetsignore` keeps repo-meta files (README, CLAUDE.md, scripts/, wrangler.jsonc) out of the served site. Live at `michaellamb-dev.michaellamb.workers.dev` until the apex custom domain is attached (see MIGRATION.md).
 
 ## Design system provenance
 

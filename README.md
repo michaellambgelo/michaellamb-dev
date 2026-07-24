@@ -15,7 +15,7 @@ Serve from the repo root — the font and asset paths are absolute (`/font/...`,
 
 ## Deploy
 
-Cloudflare Pages via the GitHub git integration: push to `main` and Cloudflare deploys the repo as-is (no build command, output dir `/`). `scripts/deploy.sh` follows the workspace `/deploy` contract.
+Cloudflare Workers (static assets) via the Workers Builds git integration: push to `main` and Cloudflare runs `wrangler deploy`, publishing the repo per `wrangler.jsonc` (assets from the repo root; `.assetsignore` keeps repo-meta files out of the served site). `scripts/deploy.sh` follows the workspace `/deploy` contract.
 
 ## Telemetry
 

@@ -1,0 +1,7 @@
+.assetsignore
+.gitignore
+CLAUDE.md
+MIGRATION.md
+README.md
+wrangler.jsonc
+scripts/
