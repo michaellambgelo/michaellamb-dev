@@ -3,14 +3,30 @@
  * Adapted from grafana-faro-proxy/client/faro-init.js.
  *
  * Telemetry routes through grafana.michaellamb.dev as the `landing` app
- * (LANDING_INGEST_TOKEN in grafana-faro-proxy). SDK versions are pinned to
- * a minor range so upstream majors can't silently break production.
+ * (LANDING_INGEST_TOKEN in grafana-faro-proxy). SDK bundles are pinned to
+ * EXACT versions and guarded with Subresource Integrity: unpkg resolves a
+ * floating range server-side per request, so a range in the URL means the
+ * page executes whatever the CDN returns at load time. Exact version + SRI
+ * means the browser refuses anything that is not the reviewed bytes.
+ *
+ * To upgrade: bump the version, re-fetch the URL, and recompute the hash
+ *   curl -sL <url> | openssl dgst -sha384 -binary | openssl base64 -A
  */
 (function () {
   const APP_NAME = 'landing';
   const APP_VERSION = '1.0.0';
   const PROXY_ORIGIN = 'https://grafana.michaellamb.dev';
-  const SDK_VERSION = '^1.4.0';
+
+  const SDK = {
+    core: {
+      url: 'https://unpkg.com/@grafana/faro-web-sdk@1.19.0/dist/bundle/faro-web-sdk.iife.js',
+      integrity: 'sha384-AitrXVjbrKDuMxgQcS6OFQOJwzOB2TN/2ZBd2QOGo57UCKtiLVbVtsXRcCrClWoL',
+    },
+    tracing: {
+      url: 'https://unpkg.com/@grafana/faro-web-tracing@1.19.0/dist/bundle/faro-web-tracing.iife.js',
+      integrity: 'sha384-g27gE4olnCLQ4CYZOJj3V1CulsIi0U3yuGtvk7v76tU2gWdNM1eQYiVPCIi0T9md',
+    },
+  };
 
   const isLocalDev =
     window.location.hostname === 'localhost' ||
@@ -20,17 +36,21 @@
     ? `http://localhost:8787/faro-proxy?app=${APP_NAME}`
     : `${PROXY_ORIGIN}/faro-proxy?app=${APP_NAME}`;
 
-  function loadScript(src) {
+  function loadScript({ url, integrity }) {
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = src;
+      s.src = url;
+      s.integrity = integrity;
+      // Required for SRI on a cross-origin script; without it the browser
+      // cannot read the response to verify the hash and blocks the load.
+      s.crossOrigin = 'anonymous';
       s.onload = resolve;
-      s.onerror = () => reject(new Error(`Failed to load ${src}`));
+      s.onerror = () => reject(new Error(`Failed to load ${url}`));
       document.head.appendChild(s);
     });
   }
 
-  loadScript(`https://unpkg.com/@grafana/faro-web-sdk@${SDK_VERSION}/dist/bundle/faro-web-sdk.iife.js`)
+  loadScript(SDK.core)
     .then(() => {
       window.GrafanaFaroWebSdk.initializeFaro({
         url: faroUrl,
@@ -40,9 +60,7 @@
           environment: isLocalDev ? 'development' : 'production',
         },
       });
-      return loadScript(
-        `https://unpkg.com/@grafana/faro-web-tracing@${SDK_VERSION}/dist/bundle/faro-web-tracing.iife.js`
-      );
+      return loadScript(SDK.tracing);
     })
     .then(() => {
       window.GrafanaFaroWebSdk.faro.instrumentations.add(
