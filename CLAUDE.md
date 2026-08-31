@@ -8,7 +8,16 @@ The apex `michaellamb.dev` landing page — a static hub linking the blog (`blog
 
 ## Stack
 
-Plain HTML/CSS/JS. **No build step, no npm, no framework.** Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc`, assets from the repo root) via the Workers Builds git integration — push to `main` and Cloudflare runs `wrangler deploy`. `.assetsignore` keeps repo-meta files (README, CLAUDE.md, scripts/, wrangler.jsonc) out of the served site. Live at `michaellamb-dev.michaellamb.workers.dev` until the apex custom domain is attached (see MIGRATION.md).
+Plain HTML/CSS/JS. **No build step, no npm, no framework.** Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc`, assets from the repo root) via the Workers Builds git integration — push to `main` and Cloudflare runs `wrangler deploy`. `.assetsignore` keeps repo-meta files (README, CLAUDE.md, scripts/, wrangler.jsonc) out of the served site. Live at `michaellamb.dev` (Worker Custom Domain, attached 2026-07-24).
+
+## Hostname routing — partly outside this repo
+
+Two mechanisms serve `/`-adjacent paths, and only one is in the tree:
+
+- **`_redirects`** (repo root, parsed by Workers Static Assets, never served as an asset) — path-level redirects on the apex. Currently `/now` and `/now/` → `blog.michaellamb.dev/now`. Add path redirects here, not in the dashboard.
+- **A zone Redirect Rule** in the `http_request_dynamic_redirect` ruleset — `www.michaellamb.dev/*` → 301 apex, preserving the query string. **This is dashboard/API config and is invisible from the repo.** It cannot live in `_redirects`: the Worker is bound to the apex only, so `www` never reaches this code at all — without the rule it follows its CNAME to the apex's `AAAA 100::` placeholder and 522s.
+
+Do **not** bind `www` as a second Worker Custom Domain instead. It would serve duplicate content on two hostnames and 403 every Faro POST, since `grafana-faro-proxy`'s `ALLOWED_ORIGINS` is apex-only by design.
 
 ## Design system provenance
 
