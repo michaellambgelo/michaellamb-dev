@@ -40,7 +40,7 @@ curl -sI https://michaellamb-dev.michaellamb.workers.dev/   # 200
 Expected and fine on the workers.dev origin (allowlists are apex-only; do not
 widen them): Faro POSTs are CORS-rejected. This resolves itself at cutover.
 
-## Phase 2 — cutover (dashboard, 2 min, zero-downtime)
+## Phase 2 — cutover (dashboard) — ⚠️ PARTIALLY DONE
 
 Carrd keeps serving until the DNS record actually changes; each step is
 independently reversible.
@@ -49,12 +49,59 @@ independently reversible.
    Custom Domain** → `michaellamb.dev`. The dashboard warns about the existing
    (carrd) record on that hostname and offers to replace it — **accepting is
    the cutover.** Cloudflare creates the Worker DNS record and certificate.
-2. Add `www.michaellamb.dev` as a second custom domain the same way, or —
-   to preserve the exact current behavior — instead create a zone
-   **Redirect Rule**: `www.michaellamb.dev/*` → 301 `https://michaellamb.dev/$1`
-   (requires a proxied DNS record for www to remain; simplest is the second
-   custom domain, which serves the same site on www).
+2. **❌ NOT DONE — `www.michaellamb.dev` has returned 522 on every path since
+   this cutover.** Step 1 was completed; this step was skipped. Verified
+   2026-08-31 against the live zone (`eeec3cc6d2141eae2f74c4fff96bcd5d`):
+
+   | Piece | State |
+   |---|---|
+   | apex DNS | `AAAA 100::` proxied — Cloudflare's black-hole placeholder |
+   | apex Worker Custom Domain | ✅ `michaellamb.dev` → `michaellamb-dev` |
+   | `www` DNS | `CNAME michaellamb.dev`, proxied |
+   | `www` Worker Custom Domain | ❌ absent |
+   | `www` Redirect Rule | ❌ absent (zone's only rule is `boxd-card.michaellamb.dev`) |
+   | Worker routes on zone | none |
+
+   The apex works only because its Custom Domain intercepts before origin.
+   `www` has no binding, so it follows the CNAME to the apex record `100::`,
+   tries to open a connection to the discard prefix, and times out → **522**.
+
+   **Fix — a zone Redirect Rule, not a second custom domain.** Binding `www`
+   as a second Custom Domain would serve duplicate content on two hostnames
+   *and* silently break telemetry: `grafana-faro-proxy/wrangler.toml`
+   `ALLOWED_ORIGINS` lists `https://michaellamb.dev` but not the `www` form,
+   so every Faro POST from a www visitor would 403. Widening it is explicitly
+   ruled out in Phase 1 above.
+
+   Dashboard → michaellamb.dev → **Rules → Redirect Rules → Create rule**:
+
+   - Name: `www -> apex`
+   - When: Custom filter expression → `Hostname` `equals` `www.michaellamb.dev`
+   - Then: **Dynamic** redirect, **301** (Permanent)
+   - Expression: `concat("https://michaellamb.dev", http.request.uri.path)`
+   - ✅ Preserve query string
+
+   Equivalent API call (needs a token with **Zone → Dynamic Redirect → Edit**;
+   wrangler's OAuth scopes and the read-only MCP token both lack it):
+
+   ```sh
+   curl -X POST -H "Authorization: Bearer $CF_API_TOKEN" \
+     "https://api.cloudflare.com/client/v4/zones/eeec3cc6d2141eae2f74c4fff96bcd5d/rulesets/00a1a33d89374912b95c8073dfe995ac/rules" \
+     -d '{"description":"www -> apex","expression":"(http.host eq \"www.michaellamb.dev\")","action":"redirect","enabled":true,"action_parameters":{"from_value":{"status_code":301,"target_url":{"expression":"concat(\"https://michaellamb.dev\", http.request.uri.path)"},"preserve_query_string":true}}}'
+   ```
+
+   POST appends to the existing ruleset; it will not disturb the boxd-card rule.
+
 3. Propagation is near-instant — the change is inside Cloudflare's own zone.
+
+**Do not delete this file until step 2 is done and verified:**
+
+```sh
+curl -sSI https://www.michaellamb.dev/    | head -3   # expect 301 -> https://michaellamb.dev/
+curl -sSI https://www.michaellamb.dev/now | head -3   # expect 301 -> https://michaellamb.dev/now
+curl -sSL -o /dev/null -w '%{http_code} @ %{url_effective}\n' https://www.michaellamb.dev/now
+                                                      # expect 200 @ https://blog.michaellamb.dev/now
+```
 
 ## Phase 3 — post-cutover verification (CLI + browser, 5 min)
 
