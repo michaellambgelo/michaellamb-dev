@@ -81,11 +81,18 @@ independently reversible.
    - Expression: `concat("https://michaellamb.dev", http.request.uri.path)`
    - ✅ Preserve query string
 
-   Equivalent API call (needs a token with **Zone → Dynamic Redirect → Edit**;
-   wrangler's OAuth scopes and the read-only MCP token both lack it):
+   Equivalent API call. Needs a **zone-scoped token with edit rights on redirect
+   rules** — search `redirect` in the token builder's permission list for the exact
+   group name (Cloudflare has renamed this area to "Single Redirects", so the label
+   is not stable enough to quote here; it was not verifiable from this session, as
+   `/user/tokens/permission_groups` is also refused by the read-only credential).
+   Neither wrangler's OAuth scopes (zone:read only) nor the Keychain has one —
+   `CF_ACCESS_CLIENT_ID/SECRET` are Access service tokens, a different thing.
 
    ```sh
-   curl -X POST -H "Authorization: Bearer $CF_API_TOKEN" \
+   curl -X POST \
+     -H "Authorization: Bearer $CF_API_TOKEN" \
+     -H "Content-Type: application/json" \
      "https://api.cloudflare.com/client/v4/zones/eeec3cc6d2141eae2f74c4fff96bcd5d/rulesets/00a1a33d89374912b95c8073dfe995ac/rules" \
      -d '{"description":"www -> apex","expression":"(http.host eq \"www.michaellamb.dev\")","action":"redirect","enabled":true,"action_parameters":{"from_value":{"status_code":301,"target_url":{"expression":"concat(\"https://michaellamb.dev\", http.request.uri.path)"},"preserve_query_string":true}}}'
    ```
