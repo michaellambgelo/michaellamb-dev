@@ -609,6 +609,58 @@ a.sk-card:hover { text-decoration: none; }
   color: var(--sk-text-tertiary);
 }
 
+/* ---------- /book: Cal.com scheduling embed ---------- */
+
+/* Landing-only: /book reuses the shared post-hero band, but that band is
+   min-height: 60vh plus calc(nav + 72px) of top padding. On a page whose whole
+   job is the calendar, that pushes the widget most of the way down the desktop
+   viewport, so this modifier compresses it. */
+.sk-post-hero--compact {
+  min-height: 0;
+  padding-top: calc(var(--sk-nav-height) + 48px);
+  padding-bottom: 48px;
+}
+
+/* Landing-only: Cal's week_view lays out a details panel beside a 7-day grid,
+   which is cramped at the shared --sk-content-max. /book is the one page that
+   widens its container. */
+.sk-strip--book .sk-strip__inner {
+  max-width: 1200px;
+}
+
+/* Landing-only: the Cal inline-embed target. min-height only reserves space and
+   hosts the loading overlay — embed.js auto-resizes the iframe itself (and
+   applies its own .cal-embed{min-height:300px}), so there is deliberately no
+   fixed height and no overflow here. Cal's docs example uses
+   overflow: scroll, which yields a scrollbar nested inside the page.
+   Both min-heights are MEASURED from a mounted booker, not guessed:
+   1541px at a 1200px container (week_view renders a full 24-hour
+   grid), 819px in the slots view below 720px. Each is set ~40px under the
+   measurement so a shorter real render never leaves dead space. */
+.sk-cal-embed {
+  position: relative;
+  min-height: 1500px;
+}
+@media (max-width: 720px) {
+  /* At this width Cal switches to the slots view (useSlotsViewOnSmallScreen),
+     a shorter layout than a narrowed week grid. */
+  .sk-cal-embed { min-height: 780px; }
+}
+
+/* The overlay is absolutely positioned so retiring it shifts nothing. */
+.sk-cal-embed .sk-widget-loading {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  padding: 0;
+}
+
+/* Landing-only: the always-visible cal.com escape hatch under the widget. */
+.sk-cal-fallback {
+  margin: 24px 0 0;
+  text-align: center;
+}
+
 /* ---------- Utility ---------- */
 .sk-sr-only {
   position: absolute;

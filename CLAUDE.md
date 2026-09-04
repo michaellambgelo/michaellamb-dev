@@ -10,6 +10,50 @@ The apex `michaellamb.dev` landing page — a static hub linking the blog (`blog
 
 Plain HTML/CSS/JS. **No build step, no npm, no framework.** Deployed as a Cloudflare Worker with static assets (`wrangler.jsonc`, assets from the repo root) via the Workers Builds git integration — push to `main` and Cloudflare runs `wrangler deploy`. `.assetsignore` keeps repo-meta files (README, CLAUDE.md, scripts/, wrangler.jsonc) out of the served site. Live at `michaellamb.dev` (Worker Custom Domain, attached 2026-07-24).
 
+## Pages — two files, hand-duplicated chrome
+
+`index.html` (`/`) and `book.html` (`/book`) are the only pages. `html_handling` is unset in
+`wrangler.jsonc`, so Workers Static Assets' `auto-trailing-slash` default serves root-level
+`book.html` at `/book` and 307s both `/book/` and `/book.html` to it — **no `_redirects`
+entry and no wrangler config is involved**.
+
+There is no include system, so both files hand-copy the `<head>`, the nav, the footer, and
+the 77-line nav hamburger IIFE. **A change to one must be applied to the other, and nothing
+in the repo will catch a desync** — there are no tests. The cheapest guard is a diff of the
+shared ranges. `book.html` deliberately differs in exactly three ways: page-specific
+`<title>`/description/canonical/`og:*`, `aria-current="page"` on its own nav row, and it
+omits `js/vhs.js` (that script early-returns on `document.querySelector('.sk-hero')`, which
+`/book` has no instance of, so it would be a pure no-op fetch).
+
+If a third page ever lands, that is the moment to reconsider a build step or a Worker with
+`main` — not before.
+
+## /book — Cal.com scheduling embed
+
+Embeds `themichaellamb/virtual-chat` via `app.cal.com/embed/embed.js`. Notes that are easy to
+get wrong:
+
+- **The namespace is hyphenated**, so `Cal.ns.virtual-chat(...)` — the form Cal's own docs
+  show — is a syntax error. Bracket notation is mandatory.
+- **`cssVarsPerTheme` values are resolved at runtime** from the `--sk-*` tokens via
+  `getComputedStyle`, so no palette colour is hardcoded on the page. Because
+  `getComputedStyle` can only ever read the *active* colour scheme, the page resolves one
+  palette, hands it to both the `light` and `dark` slots, and pins Cal's `theme` to the
+  scheme `matchMedia` reports. `cal-bg` is the one token needing an explicit per-scheme
+  choice: `--sk-surface` equals `.sk-strip`'s background in dark mode, so the booker would
+  be an invisible seam; it reads `--sk-bg-dark` there instead.
+- **`ui.autoscroll: "false"` is load-bearing.** Cal otherwise scrolls the page ~900px down to
+  the booker on mount, jumping the visitor past the heading and intro line.
+- The loading overlay is a *child* of the embed container (which owns the reserved
+  `min-height`), so retiring it shifts nothing. It is torn down by four independent triggers
+  — `linkReady`, `linkFailed`, a `MutationObserver`, and a 10s timeout — because Cal's embed
+  events are known to be unreliable (`calcom/cal.com#22866`). The plain cal.com link below is
+  a sibling and is never touched by that teardown.
+- The `.sk-cal-embed` min-heights are **measured**, not guessed. Re-measure if the layout or
+  event duration changes.
+- Unlike `js/faro.js`, `embed.js` is unversioned and cannot carry SRI. Accepted deliberately;
+  the reasoning is in a comment at the top of the script block.
+
 ## Hostname routing — partly outside this repo
 
 Two mechanisms serve `/`-adjacent paths, and only one is in the tree:

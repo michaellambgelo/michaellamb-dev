@@ -3,13 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Michael Lamb — michaellamb.dev</title>
-	<meta name="description" content="Software engineer and cinema lover in Jackson, Mississippi. Blog, Letterboxd viewer, newsletter, and projects.">
-	<link rel="canonical" href="https://michaellamb.dev/">
+	<title>Book time with Michael Lamb — michaellamb.dev</title>
+	<meta name="description" content="Book a virtual chat with Michael Lamb — software engineer in Jackson, Mississippi.">
+	<link rel="canonical" href="https://michaellamb.dev/book">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="Michael Lamb — michaellamb.dev">
-	<meta property="og:description" content="Software engineer and cinema lover in Jackson, Mississippi. Blog, Letterboxd viewer, newsletter, and projects.">
-	<meta property="og:url" content="https://michaellamb.dev/">
+	<meta property="og:title" content="Book time with Michael Lamb — michaellamb.dev">
+	<meta property="og:description" content="Book a virtual chat with Michael Lamb — software engineer in Jackson, Mississippi.">
+	<meta property="og:url" content="https://michaellamb.dev/book">
 	<meta property="og:image" content="https://michaellamb.dev/assets/og.png">
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
@@ -20,7 +20,15 @@
 	<link href="/css/theme.css" rel="stylesheet">
 	<link href="/css/landing.css" rel="stylesheet">
 	<script src="/js/faro.js"></script>
-	<script src="/js/vhs.js" defer></script>
+	<noscript>
+		<style>
+			/* JS off: the Cal widget can never mount, so collapse the
+			   placeholder and the height reserved for it. The plain
+			   cal.com link below the container stays visible. */
+			.sk-widget-loading { display: none; }
+			#sk-cal-inline { min-height: 0; }
+		</style>
+	</noscript>
 </head>
 <body>
 	<a class="sk-skip" href="#main">Skip to content</a>
@@ -36,81 +44,48 @@
 				<li><a href="https://subscribe.michaellamb.dev">Newsletter</a></li>
 				<li><a href="https://blog.michaellamb.dev/now">Now</a></li>
 				<li><a href="https://blog.michaellamb.dev/about">About</a></li>
-				<li><a href="/book">Book</a></li>
+				<li><a href="/book" aria-current="page">Book</a></li>
 			</ul>
 		</div>
 	</nav>
 
 	<main id="main">
-		<section class="sk-hero sk-hero--dark">
-			<div class="sk-hero__inner">
-				<img class="sk-avatar sk-avatar--lg" src="/assets/bio.jpg" alt="Michael Lamb">
-				<h1 class="sk-hero__title sk-anaglyph">Michael Lamb</h1>
-				<p class="sk-hero__subtitle">Software engineer. Cinema lover. Building things in Jackson, Mississippi.</p>
-				<div class="sk-hero__ctas">
-					<a class="sk-btn sk-btn--on-dark sk-btn--primary" href="https://blog.michaellamb.dev">Read my blog</a>
-					<a class="sk-btn sk-btn--on-dark sk-btn--ghost" href="/book">Book time with me</a>
-				</div>
+		<section class="sk-post-hero sk-post-hero--dark sk-post-hero--compact">
+			<div class="sk-post-hero__inner">
+				<p class="sk-eyebrow">Book</p>
+				<h1 class="sk-post-hero__title">Let&rsquo;s find a time</h1>
+				<p class="sk-post-hero__subtitle">Grab a time that works for you and I&rsquo;ll send over a calendar invite.</p>
 			</div>
 		</section>
 
-		<section class="sk-strip">
+		<section class="sk-strip sk-strip--book">
 			<div class="sk-strip__inner">
-				<div class="sk-strip__header">
-					<h2 class="sk-strip__title">Sites I work on</h2>
+				<!-- Cal.com inline embed target. The loading overlay is a CHILD of this
+				     container on purpose: the container owns the reserved min-height, so
+				     removing the overlay shifts nothing, and nesting works whether Cal
+				     replaces the container's contents or appends to them. -->
+				<div class="sk-cal-embed" id="sk-cal-inline">
+					<div class="sk-widget-loading" role="status" aria-live="polite">
+						<div class="sk-widget-loading__mark" aria-hidden="true">
+							<span class="sk-widget-loading__spinner"></span>
+							<svg class="sk-widget-loading__logo" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
+								<g font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="34">
+									<text x="32" y="32" text-anchor="middle" fill="#00ffff" transform="translate(-2,0)">ML</text>
+									<text x="32" y="32" text-anchor="middle" fill="#ff0000" transform="translate(2,0)">ML</text>
+									<text x="32" y="32" text-anchor="middle" fill="currentColor">ML</text>
+								</g>
+							</svg>
+						</div>
+						<span class="sk-widget-loading__label">loading calendar&hellip;</span>
+					</div>
 				</div>
-				<div class="sk-grid sk-grid--apps">
-					<a class="sk-card" href="https://blog.michaellamb.dev">
-						<p class="sk-card__date">blog.michaellamb.dev</p>
-						<h3 class="sk-card__title">Blog</h3>
-						<p class="sk-card__meta">Writing on software, homelab, and life.</p>
-					</a>
-					<a class="sk-card" href="https://letterboxd.michaellamb.dev">
-						<p class="sk-card__date">letterboxd.michaellamb.dev</p>
-						<h3 class="sk-card__title">Letterboxd Viewer</h3>
-						<p class="sk-card__meta">My film diary, stats, and ratings, visualized. Rolodex included.</p>
-					</a>
-					<a class="sk-card" href="https://subscribe.michaellamb.dev">
-						<p class="sk-card__date">subscribe.michaellamb.dev</p>
-						<h3 class="sk-card__title">Newsletter</h3>
-						<p class="sk-card__meta">Occasional letters, straight to your inbox.</p>
-					</a>
-					<a class="sk-card" href="https://kotlin-tutorial.michaellamb.dev">
-						<p class="sk-card__date">kotlin-tutorial.michaellamb.dev</p>
-						<h3 class="sk-card__title">Kotlin Tutorial</h3>
-						<p class="sk-card__meta">An interactive introduction to Kotlin.</p>
-					</a>
-					<a class="sk-card" href="https://embed-builder.michaellamb.dev">
-						<p class="sk-card__date">embed-builder.michaellamb.dev</p>
-						<h3 class="sk-card__title">Embed Builder</h3>
-						<p class="sk-card__meta">Embed visualizer and automation tool for Discord.</p>
-					</a>
-					<a class="sk-card" href="https://boxd-card.com">
-						<p class="sk-card__date">boxd-card.com</p>
-						<h3 class="sk-card__title">Boxd Card</h3>
-						<p class="sk-card__meta">Shareable cards from your Letterboxd profile.</p>
-					</a>
-					<a class="sk-card" href="https://cspiregaming.com">
-						<p class="sk-card__date">cspiregaming.com</p>
-						<h3 class="sk-card__title">C Spire Gaming</h3>
-						<p class="sk-card__meta">Gaming community and events in Mississippi.</p>
-					</a>
-					<a class="sk-card" href="https://jxnfilm.club">
-						<p class="sk-card__date">jxnfilm.club</p>
-						<h3 class="sk-card__title">Jackson Film Club</h3>
-						<p class="sk-card__meta">Film screenings and discussions in Jackson, Mississippi.</p>
-					</a>
-					<a class="sk-card" href="https://fertile-ground-events.pages.dev">
-						<p class="sk-card__date">fertile-ground-events.pages.dev</p>
-						<h3 class="sk-card__title">Fertile Ground Events</h3>
-						<p class="sk-card__meta">Trivia and Pinball events app for Fertile Ground Beer Co. in Jackson, Mississippi.</p>
-					</a>
-					<a class="sk-card" href="https://fertile-ground-trivia.pages.dev">
-						<p class="sk-card__date">fertile-ground-trivia.pages.dev</p>
-						<h3 class="sk-card__title">Fertile Ground Trivia</h3>
-						<p class="sk-card__meta">Trivia game hosting platform for Fertile Ground Beer Co. in Jackson, Mississippi.</p>
-					</a>
-				</div>
+
+				<!-- Always-visible escape hatch. A SIBLING of the container, never inside
+				     it, so no teardown path can reach it. -->
+				<p class="sk-caption sk-cal-fallback">Widget not loading? <a class="sk-chev" href="https://cal.com/themichaellamb/virtual-chat" target="_blank" rel="noopener">Book here.</a></p>
+				<noscript>
+					<p class="sk-caption sk-cal-fallback">The embedded calendar needs JavaScript. Use the link above, or email <a href="mailto:michael@michaellamb.dev">michael@michaellamb.dev</a>.</p>
+				</noscript>
 			</div>
 		</section>
 	</main>
@@ -230,6 +205,171 @@
 				if (!isMobile() && nav.getAttribute('data-open') === 'true') setOpen(false);
 			});
 		})();
+	</script>
+
+	<!-- ------------------------------------------------------------------
+	     Cal.com inline embed — themichaellamb/virtual-chat.
+	     Loaded ONLY on this page; index.html must never reference app.cal.com.
+
+	     Third-party script caveat, stated plainly: unlike js/faro.js, which
+	     pins exact versions and adds SRI, app.cal.com/embed/embed.js is
+	     unversioned and served `cache-control: max-age=0, must-revalidate`,
+	     so it CANNOT carry an integrity hash — the bytes can change without
+	     notice. Accepted deliberately: cssVarsPerTheme, the linkReady /
+	     linkFailed events and iframe auto-resize all require this script.
+	     Escape hatch if that ever stops being acceptable: a plain
+	     <iframe src="https://cal.com/themichaellamb/virtual-chat"> works
+	     (cal.com sends no X-Frame-Options and no frame-ancestors), at the
+	     cost of theming, events and auto-height.
+
+	     Privacy note: embed.js sets a __cf_bm cookie on cal.com at load —
+	     a third-party cookie before any user interaction. Cal has no
+	     equivalent of Calendly's hide_gdpr_banner; that option does not
+	     apply here.
+	     ------------------------------------------------------------------ -->
+	<script>
+		/* Idempotent teardown for the loading overlay, defined BEFORE the Cal
+		   block so it exists when Cal's queued callbacks fire.
+
+		   Four independent triggers, because no single one is reliable:
+		     1. Cal "linkReady"   — the happy path
+		     2. Cal "linkFailed"  — Cal reachable, link broken
+		     3. MutationObserver  — an iframe appeared but no event fired
+		        (calcom/cal.com#22866, "Embed events do not fire", is open)
+		     4. 10s timeout       — app.cal.com blocked outright, so nothing fires
+		   The fallback link below the container is a sibling and is never
+		   touched by any of these. */
+		var skCalDone;
+		(function () {
+			var container = document.getElementById('sk-cal-inline');
+			var observer = null;
+			var timer = null;
+
+			skCalDone = function () {
+				if (observer) { observer.disconnect(); observer = null; }
+				if (timer) { clearTimeout(timer); timer = null; }
+				if (!container) return;
+				var el = container.querySelector('.sk-widget-loading');
+				/* remove(), not the hidden attribute: .sk-widget-loading sets
+				   display:flex as an author rule, which outranks the UA's
+				   [hidden]{display:none}, so setting hidden would silently
+				   do nothing. */
+				if (el && el.isConnected) el.remove();
+				container.setAttribute('data-cal-settled', 'true');
+			};
+
+			if (!container) return;
+			if (window.MutationObserver) {
+				observer = new MutationObserver(function () {
+					if (container.querySelector('iframe')) skCalDone();
+				});
+				observer.observe(container, { childList: true, subtree: true });
+			}
+			timer = setTimeout(skCalDone, 10000);
+		})();
+	</script>
+
+	<script>
+		/* Bootstrap IIFE — verbatim from Cal's embed dialog. It injects
+		   app.cal.com/embed/embed.js into <head> itself, so it is inherently
+		   async; never add `defer` to this inline script. */
+		(function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+		Cal("init", "virtual-chat", { origin: "https://app.cal.com" });
+		Cal.config = Cal.config || {};
+		Cal.config.forwardQueryParams = true;
+
+		/* NOTE: the namespace is hyphenated, so Cal.ns.virtual-chat(...) — the
+		   form Cal's own docs show — is a JavaScript syntax error. Bracket
+		   notation is mandatory throughout. */
+		var skCal = Cal.ns["virtual-chat"];
+
+		/* Palette bridging. The booker renders in its own iframe, with its own
+		   document and its own :root, so it can never resolve this site's
+		   custom properties — var(--sk-accent) handed over as a string would
+		   come back empty. Values must be resolved here and passed concretely.
+
+		   getComputedStyle can only ever read the ACTIVE colour scheme: the
+		   dark tokens live inside @media (prefers-color-scheme: dark) in
+		   css/theme.css and the inactive branch is unreadable from the live
+		   cascade. So rather than trying to build two palettes, resolve ONE
+		   from the live tokens, hand it to both cssVarsPerTheme slots, and pin
+		   Cal's `theme` to the scheme we detected. That renders exactly what
+		   the page is currently showing, whichever theme Cal thinks it is in —
+		   and it works because the --sk-* tokens already invert themselves
+		   under prefers-color-scheme: dark. No palette values are hardcoded
+		   here; css/theme.css stays the single source of truth. */
+		function skTok(name) {
+			return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+		}
+
+		function skCalVars() {
+			var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			/* cal-bg is the one token that needs an explicit per-scheme choice:
+			   .sk-strip's background is --sk-bg-light, which in dark mode is the
+			   same value as --sk-surface, so mapping cal-bg to --sk-surface would
+			   make the booker an invisible seam against the strip. */
+			var vars = {
+				'cal-brand':           dark ? skTok('--sk-link-dark-bg') : skTok('--sk-accent'),
+				'cal-brand-text':      skTok('--sk-text-inverse'),
+				'cal-bg':              dark ? skTok('--sk-bg-dark') : skTok('--sk-surface'),
+				'cal-bg-subtle':       skTok('--sk-surface-muted'),
+				'cal-bg-muted':        skTok('--sk-surface-muted'),
+				'cal-bg-emphasis':     skTok('--sk-surface-muted'),
+				'cal-text':            skTok('--sk-text-primary'),
+				'cal-text-emphasis':   skTok('--sk-text-primary'),
+				'cal-text-subtle':     skTok('--sk-text-tertiary'),
+				'cal-text-muted':      skTok('--sk-text-tertiary'),
+				'cal-border':          skTok('--sk-rule'),
+				'cal-border-subtle':   skTok('--sk-rule'),
+				'cal-border-muted':    skTok('--sk-rule'),
+				'cal-border-emphasis': skTok('--sk-text-tertiary'),
+				'cal-border-booker':   skTok('--sk-rule')
+			};
+			/* radius, spacing, cal-brand-subtle and cal-brand-accent are left
+			   out on purpose — their expected value formats are unverified and
+			   a bad one breaks the booker's layout with no error message. */
+			return { theme: dark ? 'dark' : 'light', cssVarsPerTheme: { light: vars, dark: vars } };
+		}
+
+		function skCalUi() {
+			var v = skCalVars();
+			skCal("ui", {
+				"theme": v.theme,
+				"layout": "week_view",
+				"hideEventTypeDetails": false,
+				"cssVarsPerTheme": v.cssVarsPerTheme
+			});
+		}
+
+		skCal("on", { action: "linkReady", callback: function () { skCalDone(); } });
+		skCal("on", { action: "linkFailed", callback: function (e) {
+			skCalDone();
+			/* Same idiom the blog uses for a failed widget. */
+			if (window.GrafanaFaroWebSdk && window.GrafanaFaroWebSdk.faro) {
+				window.GrafanaFaroWebSdk.faro.api.pushError(
+					new Error('Cal linkFailed: ' + JSON.stringify(e && e.detail && e.detail.data))
+				);
+			}
+		} });
+
+		skCal("inline", {
+			elementOrSelector: "#sk-cal-inline",
+			calLink: "themichaellamb/virtual-chat",
+			/* ui.autoscroll=false: by default Cal scrolls the page down to the
+			   booker on mount, which would jump the visitor straight past the
+			   heading and intro line. Verified as an allowed config key in
+			   embed.js's own list. */
+			config: { "layout": "week_view", "useSlotsViewOnSmallScreen": "true", "ui.autoscroll": "false" }
+		});
+
+		skCalUi();
+
+		/* Re-theme on a live scheme flip. Whether Cal re-themes an already
+		   mounted booker in place is unverified — if it does not, the palette
+		   stays as loaded until the next reload, which is a cosmetic edge case
+		   and not worth forcing a remount over. */
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', skCalUi);
 	</script>
 </body>
 </html>
