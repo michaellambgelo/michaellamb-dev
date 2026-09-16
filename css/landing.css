@@ -621,9 +621,9 @@ a.sk-card:hover { text-decoration: none; }
   padding-bottom: 48px;
 }
 
-/* Landing-only: Cal's week_view lays out a details panel beside a 7-day grid,
-   which is cramped at the shared --sk-content-max. /book is the one page that
-   widens its container. */
+/* Landing-only: Cal's month_view lays out three columns side by side — an event
+   details panel, the month grid and the slot list — which is cramped at the
+   shared --sk-content-max. /book is the one page that widens its container. */
 .sk-strip--book .sk-strip__inner {
   max-width: 1200px;
 }
@@ -634,16 +634,22 @@ a.sk-card:hover { text-decoration: none; }
    fixed height and no overflow here. Cal's docs example uses
    overflow: scroll, which yields a scrollbar nested inside the page.
    Both min-heights are MEASURED from a mounted booker, not guessed:
-   1541px at a 1200px container (week_view renders a full 24-hour
-   grid), 819px in the slots view below 720px. Each is set ~40px under the
-   measurement so a shorter real render never leaves dead space. */
+   570px at a 1200px container (month_view renders a fixed six-row grid, and
+   the slot list scrolls internally rather than growing the frame — the height
+   held steady across month navigation and date selection), 819px in the slots
+   view below 720px. Each is set ~40px under the measurement so a shorter real
+   render never leaves dead space. */
 .sk-cal-embed {
   position: relative;
-  min-height: 1500px;
+  min-height: 530px;
 }
 @media (max-width: 720px) {
   /* At this width Cal switches to the slots view (useSlotsViewOnSmallScreen),
-     a shorter layout than a narrowed week grid. */
+     which stacks the details panel above a long slot list — hence TALLER than
+     the desktop reservation above. UNVERIFIED after the week_view to month_view
+     switch: 780px is carried over from the week_view-era measurement (819px).
+     Cal decides this from the TOP-LEVEL viewport, not the iframe's, so shrinking
+     the container cannot reproduce it — it needs a genuinely narrow window. */
   .sk-cal-embed { min-height: 780px; }
 }
 
