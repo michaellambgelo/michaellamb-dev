@@ -716,3 +716,13 @@ a.sk-card:hover { text-decoration: none; }
   .sk-article { padding: 40px 20px 32px; }
   .sk-grid { grid-template-columns: 1fr; gap: 16px; }
 }
+
+/* ---------- Legal pages (/privacy, /terms) ---------- */
+.sk-legal h2 { font-size: 24px; margin: 2em 0 0.5em; }
+.sk-legal h3 { font-size: 18px; margin: 1.5em 0 0.4em; }
+.sk-legal p, .sk-legal ul { margin: 0 0 1em; }
+.sk-legal ul { padding-left: 1.25em; }
+.sk-legal li { margin: 0 0 0.4em; }
+.sk-legal a { color: var(--sk-link); }
+.sk-legal code { font-size: 0.9em; }
+.sk-legal__meta { color: var(--sk-text-tertiary); font-size: 14px; }

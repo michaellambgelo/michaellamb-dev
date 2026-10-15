@@ -25,8 +25,15 @@ shared ranges. `book.html` deliberately differs in exactly three ways: page-spec
 omits `js/vhs.js` (that script early-returns on `document.querySelector('.sk-hero')`, which
 `/book` has no instance of, so it would be a pure no-op fetch).
 
-If a third page ever lands, that is the moment to reconsider a build step or a Worker with
-`main` — not before.
+`privacy.html` and `terms.html` (2026-10-15) are the Privacy Policy and Terms of Service for
+Discord Embed Builder, and the Discord developer portal links to them for app verification. Their
+chrome was copied from `book.html` (no Cal blocks, no `aria-current`, prose in
+`.sk-article.sk-legal`), so the same hand-sync rule applies to all four pages. Their claims about
+data handling were checked against the discord-embed-builder code on that date. If the app starts
+collecting something new, update `/privacy` and its effective date.
+
+Four pages now exceed the old "third page" threshold for reconsidering a build step. It was
+deferred: the legal pages are static prose that rarely changes. Revisit if a fifth page lands.
 
 ## /book — Cal.com scheduling embed
 

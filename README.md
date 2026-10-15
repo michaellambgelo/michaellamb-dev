@@ -8,8 +8,9 @@ Plain HTML/CSS/JS, no build step. The design system (`--sk-*` tokens, self-hoste
 
 - `index.html` — the landing page (`/`)
 - `book.html` — the Cal.com scheduling page (`/book`)
+- `privacy.html`, `terms.html` — Privacy Policy and Terms of Service for Discord Embed Builder (`/privacy`, `/terms`; linked from Discord's developer portal for app verification)
 
-There is no include system, so both files hand-duplicate `<head>`, the nav, the footer and
+There is no include system, so every page hand-duplicates `<head>`, the nav, the footer and
 the nav hamburger script. A change to one must be applied to the other; nothing checks this.
 
 ## Local preview
