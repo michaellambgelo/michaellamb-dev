@@ -63,6 +63,11 @@
   background: rgba(255, 255, 255, 0.08);
   text-decoration: none;
 }
+/* Current page. Same rule as the blog's gh-pages-blog.css, so both sites mark it alike. */
+.sk-nav__list a[aria-current] {
+  color: #ffffff;
+  font-weight: 600;
+}
 
 /* Mobile menu toggle */
 .sk-nav__toggle {
