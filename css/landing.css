@@ -731,3 +731,4 @@ a.sk-card:hover { text-decoration: none; }
 .sk-legal a { color: var(--sk-link); }
 .sk-legal code { font-size: 0.9em; }
 .sk-legal__meta { color: var(--sk-text-tertiary); font-size: 14px; }
+.sk-legal h4 { font-size: 16px; margin: 1.25em 0 0.35em; }

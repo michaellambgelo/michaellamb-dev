@@ -25,12 +25,14 @@ shared ranges. `book.html` deliberately differs in exactly three ways: page-spec
 omits `js/vhs.js` (that script early-returns on `document.querySelector('.sk-hero')`, which
 `/book` has no instance of, so it would be a pure no-op fetch).
 
-`privacy.html` and `terms.html` (2026-10-15) are the Privacy Policy and Terms of Service for
-Discord Embed Builder, and the Discord developer portal links to them for app verification. Their
+`privacy.html` (2026-10-15) is the site-wide Privacy Policy. It covers the websites, the newsletter
+(subscribe.michaellamb.dev, sent through Hakanai) and Discord Embed Builder, which has the anchor
+`#discord-embed-builder`. `terms.html` is the Terms of Service for Discord Embed Builder only. The Discord
+developer portal links to both pages for app verification. Their
 chrome was copied from `book.html` (no Cal blocks, no `aria-current`, prose in
 `.sk-article.sk-legal`), so the same hand-sync rule applies to all four pages. Their claims about
-data handling were checked against the discord-embed-builder code on that date. If the app starts
-collecting something new, update `/privacy` and its effective date.
+data handling were checked against the discord-embed-builder, subscribe.michaellamb.dev and blog code on
+that date. If any of them starts collecting something new, update `/privacy` and its effective date.
 
 Four pages now exceed the old "third page" threshold for reconsidering a build step. It was
 deferred: the legal pages are static prose that rarely changes. Revisit if a fifth page lands.

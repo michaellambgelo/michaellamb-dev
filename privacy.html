@@ -4,11 +4,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Privacy Policy — michaellamb.dev</title>
-	<meta name="description" content="How Discord Embed Builder collects, uses and protects your data.">
+	<meta name="description" content="How michaellamb.dev, the blog, the newsletter and Discord Embed Builder handle your data.">
 	<link rel="canonical" href="https://michaellamb.dev/privacy">
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="Privacy Policy — michaellamb.dev">
-	<meta property="og:description" content="How Discord Embed Builder collects, uses and protects your data.">
+	<meta property="og:description" content="How michaellamb.dev, the blog, the newsletter and Discord Embed Builder handle your data.">
 	<meta property="og:url" content="https://michaellamb.dev/privacy">
 	<meta property="og:image" content="https://michaellamb.dev/assets/og.png">
 	<meta name="twitter:card" content="summary_large_image">
@@ -45,23 +45,49 @@
 			<div class="sk-post-hero__inner">
 				<p class="sk-eyebrow">Legal</p>
 				<h1 class="sk-post-hero__title">Privacy Policy</h1>
-				<p class="sk-post-hero__subtitle">Discord Embed Builder: the web app, bot and API.</p>
+				<p class="sk-post-hero__subtitle">michaellamb.dev, the blog, the newsletter and Discord Embed Builder.</p>
 			</div>
 		</section>
 
 		<article class="sk-article sk-legal">
 			<p class="sk-legal__meta">Effective October 15, 2026</p>
 
-			<p>This policy covers <strong>Discord Embed Builder</strong>: the web app at <a href="https://embed-builder.michaellamb.dev">embed-builder.michaellamb.dev</a>, its Discord bot and slash commands, and the API that serves both. Michael Lamb (&ldquo;I&rdquo;, &ldquo;me&rdquo;) builds and runs it as an individual. It is not affiliated with or endorsed by Discord.</p>
+			<p>This policy covers the sites and apps Michael Lamb (&ldquo;I&rdquo;, &ldquo;me&rdquo;) runs as an individual:</p>
+			<ul>
+				<li><a href="#websites">the websites</a>: <a href="https://michaellamb.dev">michaellamb.dev</a> and the blog at <a href="https://blog.michaellamb.dev">blog.michaellamb.dev</a>;</li>
+				<li><a href="#newsletter">the newsletter</a>: <a href="https://subscribe.michaellamb.dev">subscribe.michaellamb.dev</a>, delivered through Hakanai;</li>
+				<li><a href="#discord-embed-builder">Discord Embed Builder</a>: the web app at <a href="https://embed-builder.michaellamb.dev">embed-builder.michaellamb.dev</a>, its Discord bot and slash commands, and the API that serves both.</li>
+			</ul>
+			<p>The short version: each one keeps only what it needs to do what you asked. I encrypt the sensitive parts, never sell your data or use it for advertising or AI training, and delete it when you ask. None of them is affiliated with or endorsed by Discord or GitHub.</p>
 
-			<p>The short version: I keep what the app needs to do what you asked, encrypt the sensitive parts, don&rsquo;t sell or share it for advertising, and delete it when you ask.</p>
+			<h2 id="websites">The websites</h2>
+			<p>michaellamb.dev and blog.michaellamb.dev are static sites. They have no accounts and set no cookies of their own.</p>
+			<ul>
+				<li><strong>Usage and error data.</strong> Both sites send page views, performance timings and errors to Grafana Cloud, through a proxy I run at grafana.michaellamb.dev. It isn&rsquo;t used to identify you.</li>
+				<li><strong>Comments.</strong> Comments on blog posts use <a href="https://giscus.app" rel="noopener">giscus</a>, which stores them as GitHub Discussions on the blog&rsquo;s public repository. To comment, you sign in with GitHub; your comment and GitHub profile are then public on GitHub, under <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub&rsquo;s privacy statement</a>.</li>
+				<li><strong>Booking.</strong> The <a href="/book">booking page</a> embeds <a href="https://cal.com" rel="noopener">Cal.com</a>. If you book a time, the details you enter go to Cal.com and to me, and I use them only to set up our meeting. Cal.com sets its own cookies when the page loads.</li>
+				<li><strong>Members page.</strong> The blog&rsquo;s Members page lists people in my Discord server who hold certain roles, with their Discord display name, avatar and join date. If you&rsquo;d rather not appear there, tell me and I&rsquo;ll remove the role.</li>
+				<li><strong>Hosting.</strong> The sites are served by Cloudflare and GitHub Pages, which see your IP address and browser details like any web host.</li>
+			</ul>
 
-			<h2>What I collect</h2>
+			<h2 id="newsletter">The newsletter</h2>
+			<p>The newsletter emails each new blog post to subscribers.</p>
+			<ul>
+				<li><strong>What I collect:</strong> only your email address.</li>
+				<li><strong>Who runs the list.</strong> I use <a href="https://hakanai.io" rel="noopener">Hakanai</a>, a third-party newsletter service, to hold the subscriber list and send the emails. When you subscribe, your address goes straight from your browser to Hakanai; my own servers never receive or store it. Hakanai handles it for me under <a href="https://hakanai.io/privacy-policy" rel="noopener">its own privacy policy</a>. I can see the subscriber list in Hakanai&rsquo;s dashboard, and I use it only to send the newsletter.</li>
+				<li><strong>Confirmation.</strong> You aren&rsquo;t subscribed until you click the link in the confirmation email Hakanai sends.</li>
+				<li><strong>Unsubscribing.</strong> Every issue has an unsubscribe link. To have your address deleted altogether, email me and I&rsquo;ll remove it from Hakanai.</li>
+				<li><strong>The chat on the signup page.</strong> The terminal on subscribe.michaellamb.dev has an optional chatbot. If you use it, your messages (and a name, if you give one) are processed by Cloudflare Workers AI. The last few messages are kept for up to an hour so the conversation makes sense, and your IP address is kept for up to an hour for rate limiting.</li>
+				<li><strong>Fonts.</strong> The signup page loads its font from Google Fonts, which sees your IP address.</li>
+			</ul>
 
-			<h3>When you sign in with Discord</h3>
+			<h2 id="discord-embed-builder">Discord Embed Builder</h2>
+
+			<h3>What it collects</h3>
+			<h4>When you sign in with Discord</h4>
 			<p>Sign-in uses Discord OAuth with the <code>identify</code> and <code>guilds</code> scopes. The app never asks for your email address. I store your Discord user ID, username, display name, avatar and your Discord access and refresh tokens in an encrypted session. Your server list is fetched from Discord when you browse servers and channels; it isn&rsquo;t saved.</p>
 
-			<h3>What you create</h3>
+			<h4>What you create</h4>
 			<ul>
 				<li><strong>Saved embeds</strong>: the embeds and buttons you save to your account.</li>
 				<li><strong>Webhooks</strong>: the webhook URLs you save or create, with the server, channel and name they belong to.</li>
@@ -70,35 +96,35 @@
 				<li><strong>Channel watchers</strong>: the server you watch, your search query, the channels you exclude, the target webhook and template, and a cursor of the last message seen in each channel.</li>
 			</ul>
 
-			<h3>Channel watchers and message content</h3>
+			<h4>Channel watchers and message content</h4>
 			<p>A channel watcher can only be created by someone with the Manage Server permission in that server. While it is on, the bot reads new messages in the server&rsquo;s text and announcement channels (except the ones excluded) about once a minute, and checks them against the watcher&rsquo;s query. Messages from bots and webhooks are ignored. Messages that match are re-posted to the webhook the watcher&rsquo;s owner chose, including the text, the author&rsquo;s name and avatar, attachments and a link to the original. Messages are only processed in memory: their content is not stored, only the ID of the last message checked in each channel.</p>
 
-			<h3>Slash commands</h3>
+			<h4>Slash commands</h4>
 			<p>Commands read your own scheduled messages, RSS subscriptions and channel watchers. They store nothing new.</p>
 
-			<h3>Feedback</h3>
+			<h4>Feedback</h4>
 			<p>If you send feedback from the app, your message goes to me through a private Discord channel, with your Discord username, display name and user ID, the page you were on and your browser&rsquo;s user agent.</p>
 
-			<h3>Usage and error data</h3>
+			<h4>Usage and error data</h4>
 			<ul>
 				<li>The web app sends performance, error and usage data (which features are used, page load timing, errors) to Grafana Cloud. Addresses are trimmed to the page path, and webhook tokens and other credentials are removed before anything leaves your browser. If you&rsquo;re signed in, the data carries a shortened one-way hash of your Discord ID instead of the ID itself.</li>
 				<li>The bot records which slash command was used, whether it succeeded and how long it took, with the same hash.</li>
 				<li>A private dashboard counts sign-ins, command use and saves, again by hash. When you create a webhook through the app, it also records the server and channel IDs.</li>
 			</ul>
 
-			<h3>IP addresses</h3>
+			<h4>IP addresses</h4>
 			<p>Your IP address is used for rate limiting and kept for at most 24 hours. Cloudflare, which hosts the API, may process it under its own policies.</p>
 
-			<h3>In your browser</h3>
+			<h4>In your browser</h4>
 			<ul>
 				<li>One cookie, <code>discord_session</code>, holds a random session ID. It is HTTP-only and secure, and lasts 7 days from your last visit.</li>
 				<li>Local storage holds your current draft, a copy of your saved embeds and webhooks (including webhook URLs), and a few interface preferences. It stays on your device until you clear it.</li>
 			</ul>
 
-			<h2>How I use it</h2>
-			<p>Only to run the app: to sign you in, save your work, send messages to the webhooks you choose, run your schedules, feeds and watchers, keep the service working and secure, and understand which features get used. I don&rsquo;t sell your data, use it for advertising, or use it to train AI models.</p>
+			<h3>How it&rsquo;s used</h3>
+			<p>Only to run the app: to sign you in, save your work, send messages to the webhooks you choose, run your schedules, feeds and watchers, keep the service working and secure, and understand which features get used.</p>
 
-			<h2>Where it lives and who handles it</h2>
+			<h3>Where it lives and who handles it</h3>
 			<ul>
 				<li><strong>Cloudflare</strong> runs the API and stores account data in Cloudflare KV. Sessions, tokens, webhooks, schedules, subscriptions and watchers are encrypted with AES-256-GCM. Saved embeds are not encrypted.</li>
 				<li><strong>Discord</strong> receives what you post to it and the API calls the app makes for you.</li>
@@ -107,9 +133,8 @@
 				<li>The usage dashboard runs on hardware I own, behind Cloudflare Access.</li>
 				<li>The app fetches the RSS feeds you subscribe to, and your browser loads the images you put in embeds directly from their URLs, so those sites see the request.</li>
 			</ul>
-			<p>I disclose data only when the law requires it.</p>
 
-			<h2>How long I keep it</h2>
+			<h3>How long it&rsquo;s kept</h3>
 			<ul>
 				<li>Sessions end 7 days after your last visit or when you log out. Logging out also revokes the Discord token.</li>
 				<li>Sent or failed scheduled messages are removed 24 hours after their final attempt.</li>
@@ -119,19 +144,20 @@
 
 			<h2>Your choices and rights</h2>
 			<ul>
-				<li>Delete individual embeds, webhooks, scheduled messages, RSS subscriptions and channel watchers in the app at any time.</li>
-				<li>To get a copy of your data, or have all of it deleted (including usage records tied to your hash), email <a href="mailto:michael@michaellamb.dev">michael@michaellamb.dev</a> from an address you can verify, or contact me on Discord with the account involved. I&rsquo;ll respond within 30 days.</li>
-				<li>Revoke the app&rsquo;s access any time in Discord under <em>User Settings &rarr; Authorized Apps</em>. Server admins can remove the bot or turn off a watcher.</li>
+				<li>To get a copy of your data from any of these services, or have it deleted, email <a href="mailto:michael@michaellamb.dev">michael@michaellamb.dev</a> from an address you can verify, or contact me on Discord with the account involved. I&rsquo;ll respond within 30 days.</li>
+				<li>Newsletter: unsubscribe from any issue.</li>
+				<li>Discord Embed Builder: delete individual embeds, webhooks, scheduled messages, RSS subscriptions and channel watchers in the app at any time. You can also revoke the app&rsquo;s access in Discord under <em>User Settings &rarr; Authorized Apps</em>, and server admins can remove the bot or turn off a watcher.</li>
 			</ul>
+			<p>I disclose data only when the law requires it.</p>
 
 			<h2>Children</h2>
-			<p>The app is for people old enough to use Discord under its terms (at least 13, or the minimum age where you live). I don&rsquo;t knowingly collect data from anyone younger.</p>
+			<p>None of these services is meant for children under 13, and Discord Embed Builder requires you to be old enough to use Discord where you live. I don&rsquo;t knowingly collect data from anyone under 13.</p>
 
 			<h2>Security</h2>
 			<p>Credentials are encrypted at rest and sent only over HTTPS, and the admin tools sit behind single sign-on. No system is perfectly secure; if a breach affects your data, I&rsquo;ll tell you as soon as I can.</p>
 
 			<h2>Changes</h2>
-			<p>If this policy changes, I&rsquo;ll update the date above. For significant changes, I&rsquo;ll also post a notice in the app.</p>
+			<p>If this policy changes, I&rsquo;ll update the date above. For significant changes, I&rsquo;ll also post a notice on the affected site or app.</p>
 
 			<h2>Contact</h2>
 			<p>Michael Lamb, Jackson, Mississippi, USA. <a href="mailto:michael@michaellamb.dev">michael@michaellamb.dev</a></p>
