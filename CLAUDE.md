@@ -77,6 +77,7 @@ Do **not** bind `www` as a second Worker Custom Domain instead. It would serve d
 - `css/theme.css` — **verbatim copy** of `michaellambgelo.github.io/css/theme.css` (the `--sk-*` token source of truth). To pick up blog token changes, re-diff against the blog copy. Do not edit tokens here.
 - `css/landing.css` — trimmed extraction of the blog's `gh-pages-blog.css` components (nav, buttons, hero, strip/grid/card, footer, utilities). The only landing-original rules are the `.sk-grid--apps` 2×2 override and the `a.sk-card` full-card-anchor styles.
 - `font/inter/` — woff2 copies from the blog (Light/Regular/SemiBold/Bold). theme.css references them by absolute path, so always serve from repo root.
+- `assets/og-card.png` — the `og:image` for all four pages, rendered with the blog's `scripts/generate_seo_image.rb` (`render_card`, dark tone, eyebrow `MICHAELLAMB.DEV`, no date) so it matches the blog's card design. It replaced `assets/og.png`, which was a copy of the blog's pre-2026-08-18 `seo/default.png` and showed a 2023 post's title. **Never copy a blog `seo/` file here**, because those cards carry a post's title and date. To change the card, render it again and **give it a new filename**: Discord, Slack and LinkedIn cache link previews by image URL, so overwriting the file in place keeps the old preview.
 - Access tokens as CSS variables (`var(--sk-accent)` etc.) — never hardcode palette colors.
 - The nav hamburger/scroll-lock/focus-trap script inlined in `index.html` is copied from the blog's `navbar.html`; keep in sync if the blog's changes.
 
