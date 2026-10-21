@@ -16,10 +16,10 @@ jobs:
   check-site:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # The blog supplies navbar.html + _config.yml (nav-sync check) and seo/ (the
       # copied-card hash check). Cone mode always includes root files like _config.yml.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: michaellambgelo/michaellambgelo.github.io
           path: .blog
