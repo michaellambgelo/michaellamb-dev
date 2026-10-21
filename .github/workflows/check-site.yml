@@ -1,0 +1,32 @@
+# Workers Builds deploys any push to main straight from Cloudflare, so this job
+# cannot block a deploy. It makes drift visible on pushes that skipped the local
+# pre-push hook (other machines, --no-verify, the GitHub web editor) and on PRs.
+name: check-site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The blog supplies navbar.html + _config.yml (nav-sync check) and seo/ (the
+      # copied-card hash check). Cone mode always includes root files like _config.yml.
+      - uses: actions/checkout@v4
+        with:
+          repository: michaellambgelo/michaellambgelo.github.io
+          path: .blog
+          sparse-checkout: |
+            _includes/body/sections
+            seo
+          sparse-checkout-cone-mode: true
+      - run: scripts/check-site.sh
+        env:
+          BLOG_DIR: ${{ github.workspace }}/.blog

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Workers Builds deploys every push to main without running scripts/deploy.sh,
+# so this hook is the local gate: refuse the push if check-site.sh finds drift.
+# Bypass deliberately with `git push --no-verify`.
+# Installed by `git config core.hooksPath git-hooks` (scripts/install-hooks.sh).
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+if ! "$root/scripts/check-site.sh"; then
+  echo "pre-push: scripts/check-site.sh failed; push refused (git push --no-verify to override)" >&2
+  exit 1
+fi

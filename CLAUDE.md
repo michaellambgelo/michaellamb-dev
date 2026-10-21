@@ -25,8 +25,14 @@ and nav IIFE against `privacy.html` after dropping only the per-page lines liste
 the primary nav against the blog's `_includes/body/sections/navbar.html`, and checks every
 `og:image`/`twitter:image` (an `https://michaellamb.dev/` URL for a 1200×630 PNG/JPEG in the repo
 that is not a copy of a blog `seo/` card). `scripts/deploy.sh` runs it as a preflight (exit 2),
-but Workers Builds deploys **any** push to `main` without going through `deploy.sh`, so run
-`scripts/check-site.sh` before pushing. A new allowed difference must be added to the script's
+but Workers Builds deploys **any** push to `main` without going through `deploy.sh`. Two more
+gates cover that. The `git-hooks/pre-push` hook runs it and refuses the push (installed per clone
+with `sh scripts/install-hooks.sh`, which sets `core.hooksPath`; bypass with `--no-verify`). The
+`.github/workflows/check-site.yml` job runs it on every push and PR, using a sparse checkout of the
+public blog repo for the nav and `seo/` checks. That job **cannot block a deploy**: Cloudflare
+builds in parallel, so a red run means the drift is already live and needs a fix-forward. A blog
+nav change only turns this job red on the next landing push. `git-hooks/` and `.github/` are in
+`.assetsignore`, so neither is served. A new allowed difference must be added to the script's
 `PER_PAGE`/`EXTRAS` tables as well as here. `book.html` deliberately differs in exactly three ways: page-specific
 `<title>`/description/canonical/`og:*`, `aria-current="page"` on its own nav row, and it
 omits `js/vhs.js` (that script early-returns on `document.querySelector('.sk-hero')`, which
