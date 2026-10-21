@@ -11,16 +11,60 @@
 	<meta property="og:description" content="Software engineer and cinema lover in Jackson, Mississippi. Blog, Letterboxd viewer, newsletter, and projects.">
 	<meta property="og:url" content="https://michaellamb.dev/">
 	<meta property="og:image" content="https://michaellamb.dev/assets/og-card.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Michael Lamb — software engineer and cinema lover in Jackson, Mississippi, beside the ML monogram over a Mississippi outline">
 	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="https://michaellamb.dev/assets/og-card.png">
 	<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 	<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
 	<link rel="icon" type="image/png" href="/assets/favicon.png">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 	<link rel="preload" href="/font/inter/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="/font/inter/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 	<link href="/css/theme.css" rel="stylesheet">
 	<link href="/css/landing.css" rel="stylesheet">
 	<script src="/js/faro.js"></script>
 	<script src="/js/vhs.js" defer></script>
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "Person",
+				"@id": "https://michaellamb.dev/#person",
+				"name": "Michael Lamb",
+				"url": "https://michaellamb.dev/",
+				"image": "https://michaellamb.dev/assets/bio.jpg",
+				"jobTitle": "Software Engineer",
+				"email": "mailto:michael@michaellamb.dev",
+				"homeLocation": {
+					"@type": "Place",
+					"address": {
+						"@type": "PostalAddress",
+						"addressLocality": "Jackson",
+						"addressRegion": "Mississippi",
+						"addressCountry": "US"
+					}
+				},
+				"sameAs": [
+					"https://blog.michaellamb.dev",
+					"https://github.com/michaellambgelo",
+					"https://www.linkedin.com/in/michael-lamb-ms/",
+					"https://letterboxd.com/michaellamb",
+					"https://twitch.tv/michaellambgelo"
+				]
+			},
+			{
+				"@type": "WebSite",
+				"@id": "https://michaellamb.dev/#website",
+				"name": "michaellamb.dev",
+				"url": "https://michaellamb.dev/",
+				"author": { "@id": "https://michaellamb.dev/#person" }
+			}
+		]
+	}
+	</script>
 </head>
 <body>
 	<a class="sk-skip" href="#main">Skip to content</a>
@@ -44,7 +88,11 @@
 	<main id="main">
 		<section class="sk-hero sk-hero--dark">
 			<div class="sk-hero__inner">
-				<img class="sk-avatar sk-avatar--lg" src="/assets/bio.jpg" alt="Michael Lamb">
+				<!-- display:contents keeps the <img> the flex item, as it was before the <picture> wrapper -->
+				<picture style="display: contents">
+					<source srcset="/assets/bio.webp" type="image/webp">
+					<img class="sk-avatar sk-avatar--lg" src="/assets/bio.jpg" alt="Michael Lamb" width="220" height="220">
+				</picture>
 				<h1 class="sk-hero__title sk-anaglyph">Michael Lamb</h1>
 				<p class="sk-hero__subtitle">Software engineer. Cinema lover. Building things in Jackson, Mississippi.</p>
 				<div class="sk-hero__ctas">
