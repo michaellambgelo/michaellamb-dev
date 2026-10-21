@@ -57,8 +57,11 @@ the 404 and legal pages are static and rarely change, so the cost is five hand-s
 chrome. Every shared `<head>` change (e.g. the `apple-touch-icon` link, `og:image:*` and
 `twitter:image` tags) must land in all five files. Revisit if a sixth page lands or the chrome
 starts changing often. `sitemap.xml` lists the four indexable pages (not `/404`) and must be
-updated by hand when a page is added; `robots.txt` points at it (Cloudflare's managed
-content-signals robots.txt is prepended to it at the edge).
+updated by hand when a page is added; `robots.txt` points at it. Cloudflare's managed
+content-signals robots.txt is served only on hosts that have **no** robots.txt of their own, so
+this file replaced it (verified 2026-10-20). Nothing was lost: on this zone the managed file is
+all comments, with no `Content-Signal:` or `Disallow` lines. If AI-crawler signals are ever
+turned on in the dashboard, add the equivalent lines here, because this file wins.
 
 ## /book — Cal.com scheduling embed
 
