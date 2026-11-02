@@ -9,9 +9,12 @@ Plain HTML/CSS/JS, no build step. The design system (`--sk-*` tokens, self-hoste
 - `index.html` — the landing page (`/`)
 - `book.html` — the Cal.com scheduling page (`/book`)
 - `privacy.html` — site-wide Privacy Policy (websites, newsletter, Discord Embed Builder); `terms.html` — Terms of Service for Discord Embed Builder (`/privacy`, `/terms`; linked from Discord's developer portal for app verification)
+- `404.html` — the not-found page, served with a 404 status for any unmatched path (`assets.not_found_handling` in `wrangler.jsonc`); `noindex`
 
 There is no include system, so every page hand-duplicates `<head>`, the nav, the footer and
-the nav hamburger script. A change to one must be applied to the other; nothing checks this.
+the nav hamburger script. A change to one must be applied to all the others.
+`scripts/check-site.sh` checks that they match (run by the pre-push hook from
+`scripts/install-hooks.sh` and by `.github/workflows/check-site.yml` on pushes to `main` and PRs).
 
 ## Local preview
 
