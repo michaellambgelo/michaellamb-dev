@@ -4,7 +4,8 @@
  * noise, chroma bleed, grain, and scanlines.
  *
  * Progressive enhancement: requires the experimental HTML-in-canvas API
- * (canvas `layoutsubtree` + ctx.drawElementImage + canvas.requestPaint)
+ * (canvas `content="drawable"`, formerly `layoutsubtree`, +
+ * ctx.drawElementImage + canvas.requestPaint)
  * plus WebGL2. Anywhere that's missing, the hero is left exactly as
  * authored. prefers-reduced-motion freezes the tape on a still frame.
  *
@@ -589,10 +590,17 @@
     if (!hero) return;
 
     var source = document.createElement('canvas');
+    // The opt-in was renamed while the API was in development. Older
+    // builds read `layoutsubtree` on the canvas; current ones require
+    // `content="drawable"` on the canvas plus `drawable` on each element
+    // passed to drawElementImage, and throw InvalidStateError without
+    // them. Each build ignores the spelling it does not know.
     source.setAttribute('layoutsubtree', 'true');
+    source.setAttribute('content', 'drawable');
     source.className = 'sk-fx-source';
 
     var content = document.createElement('div');
+    content.setAttribute('drawable', '');
     content.className = 'sk-fx-content';
     while (hero.firstChild) content.appendChild(hero.firstChild);
     source.appendChild(content);
