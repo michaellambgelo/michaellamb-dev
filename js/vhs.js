@@ -7,6 +7,13 @@
  * (canvas `layoutsubtree` + ctx.drawElementImage + canvas.requestPaint)
  * plus WebGL2. Anywhere that's missing, the hero is left exactly as
  * authored. prefers-reduced-motion freezes the tape on a still frame.
+ *
+ * The API is experimental and has changed shape between Chrome builds, so
+ * detecting it is not proof that it works. The effect therefore has to
+ * show a first non-empty frame within FIRST_FRAME_MS; if it does not (or
+ * a draw throws, GL reports an error, or the context is lost) the hero's
+ * authored DOM is put back. Without that, a half-working API leaves the
+ * hero as an empty canvas on the dark band — a black page.
  * Reuses the .sk-fx-* wrapper CSS from the particle-reveal enhancement.
  */
 (function () {
@@ -203,7 +210,9 @@
     );
   }
 
-  function createVHS(elements, options) {
+  var FIRST_FRAME_MS = 2000;
+
+  function createVHS(elements, options, onFail) {
     var config = Object.assign({}, DEFAULTS, options || {});
     var source = elements.source;
     var content = elements.content;
@@ -225,8 +234,19 @@
       typeof source.requestPaint === 'function'
     );
 
+    if (!htmlInCanvas) return null;
+
     var contentDirty = false;
     var wake = function () {};
+    var failed = false;
+    var proven = false;
+
+    function fail(reason) {
+      if (failed) return;
+      failed = true;
+      console.warn('VHS disabled, restoring hero:', reason);
+      if (onFail) onFail(reason);
+    }
 
     if (htmlInCanvas) {
       source.onpaint = function () {
@@ -235,7 +255,9 @@
           sourceCtx.drawElementImage(content, 0, 0);
           contentDirty = true;
           wake();
-        } catch (e) {}
+        } catch (e) {
+          fail(e);
+        }
       };
     }
 
@@ -255,6 +277,10 @@
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error('VHS link error:', gl.getProgramInfoLog(program));
+      return null;
+    }
 
     var uniforms = {};
     var count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
@@ -344,12 +370,44 @@
     syncCanvasSize();
     syncBezelColor();
 
+    var uploaded = false;
+
     function uploadContent() {
       if (!htmlInCanvas || !contentDirty) return;
       contentDirty = false;
       syncBezelColor();
       gl.bindTexture(gl.TEXTURE_2D, contentTexture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      while (gl.getError() !== gl.NO_ERROR) {}
+      try {
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      } catch (e) {
+        fail(e);
+        return;
+      }
+      var err = gl.getError();
+      if (err !== gl.NO_ERROR) {
+        fail('texImage2D GL error 0x' + err.toString(16));
+        return;
+      }
+      uploaded = true;
+    }
+
+    /* One-off proof that the pipeline produced pixels: sample a few rows
+       of the frame just drawn and look for any coverage. The hero band's
+       own background is not part of the captured content, so an empty
+       capture reads back fully transparent. */
+    function frameHasContent() {
+      var w = output.width;
+      var h = output.height;
+      var row = new Uint8Array(w * 4);
+      var rows = 24;
+      for (var r = 1; r < rows; r++) {
+        gl.readPixels(0, Math.floor((h * r) / rows), w, 1, gl.RGBA, gl.UNSIGNED_BYTE, row);
+        for (var i = 3; i < row.length; i += 4) {
+          if (row[i] > 8) return true;
+        }
+      }
+      return false;
     }
 
     var time = 0;
@@ -416,7 +474,27 @@
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, output.width, output.height);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      if (!proven && uploaded && !failed && frameHasContent()) {
+        proven = true;
+        clearTimeout(proofTimer);
+      }
     }
+
+    var proofTimer = 0;
+    function armProof() {
+      proofTimer = setTimeout(function () {
+        if (proven || failed || destroyed) return;
+        // Frames only run while the hero is on screen in a visible tab;
+        // don't count time when they could not have.
+        if (document.hidden || !visible) return armProof();
+        fail(uploaded ? 'first frame was empty' : 'no paint within ' + FIRST_FRAME_MS + 'ms');
+      }, FIRST_FRAME_MS);
+    }
+
+    function onContextLost() {
+      fail('WebGL context lost');
+    }
+    output.addEventListener('webglcontextlost', onContextLost);
 
     var raf = 0;
     var lastTime = performance.now();
@@ -428,7 +506,7 @@
     var reducedMotion = motionQuery.matches;
 
     function frame(now) {
-      if (destroyed) return;
+      if (destroyed || failed) return;
       if (!visible) {
         running = false;
         return;
@@ -453,6 +531,7 @@
 
     wake = start;
     start();
+    armProof();
 
     function onMotionChange() {
       reducedMotion = motionQuery.matches;
@@ -486,6 +565,8 @@
       destroy: function () {
         destroyed = true;
         cancelAnimationFrame(raf);
+        clearTimeout(proofTimer);
+        output.removeEventListener('webglcontextlost', onContextLost);
         observer.disconnect();
         intersection.disconnect();
         motionQuery.removeEventListener('change', onMotionChange);
@@ -523,6 +604,13 @@
     hero.appendChild(source);
     hero.appendChild(output);
 
+    function restore() {
+      if (!source.parentNode) return;
+      while (content.firstChild) hero.appendChild(content.firstChild);
+      hero.removeChild(source);
+      hero.removeChild(output);
+    }
+
     var instance = createVHS(
       { source: source, content: content, output: output },
       {
@@ -541,15 +629,17 @@
         barrel: 0,
         saturation: 1,
         exposure: 1,
+      },
+      function () {
+        // Always async (paint, frame, timer or context event), so
+        // `instance` is assigned by the time this runs.
+        if (instance) instance.destroy();
+        restore();
       }
     );
 
-    if (!instance) {
-      // No WebGL2: restore the authored DOM.
-      while (content.firstChild) hero.appendChild(content.firstChild);
-      hero.removeChild(source);
-      hero.removeChild(output);
-    }
+    // No WebGL2, or the program did not link: restore the authored DOM.
+    if (!instance) restore();
   }
 
   if (document.readyState === 'loading') {
